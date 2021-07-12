@@ -32,10 +32,10 @@ public class TakeGameImpl implements Game {
 	private void humanTurn() {
 		int turn;
 		while(true) {
-			System.out.println(String.format(USER_PROMPT, stones));
-			turn = scanner.nextInt();
+			print(String.format(USER_PROMPT, stones));
+			turn = readInt();
 			if(turn >= 1 && turn <= 3) break;
-			System.out.println(ERROR_MESSAGE);
+			print(ERROR_MESSAGE);
 		}
 		stones -= turn;
 		
@@ -46,22 +46,30 @@ public class TakeGameImpl implements Game {
 		final int zuege[] = {3,1,1,2};
 		
 		if(stones < 1) {
-			System.out.println("Du Loser");
+			print("Du Loser");
 			gameover = true;
 			return;
 		}
 		
 		if(stones == 1) {
-			System.out.println("Du hast nur Glueck gehabt!");
+			print("Du hast nur Glueck gehabt!");
 			gameover = true;
 			return;
 		}
 		
 		turn = zuege[stones % 4];
 		
-		System.out.println(String.format("Computer nimmt %s Steine.", turn));
+		print(String.format("Computer nimmt %s Steine.", turn));
 		
 		stones -= turn;
+	}
+	
+	private void print(String message) {
+		System.out.println(message);
+	}
+	
+	private int readInt() {
+		return scanner.nextInt();
 	}
 
 }
