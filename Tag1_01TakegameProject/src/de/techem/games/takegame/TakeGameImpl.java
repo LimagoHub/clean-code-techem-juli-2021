@@ -16,20 +16,25 @@ public class TakeGameImpl implements Game {
 		gameover = false;
 	}
 
+	private boolean isGameOver() {
+		return stones <= 0;
+	}
 	@Override
 	public void play() {
-		while (! gameover) {
+		while (! isGameOver()) {
 			executeTurns();
 		}
 
 	}
 
-	private void executeTurns() {
+	private void executeTurns() { // Integration
 		humanTurn();
 		computerTurn();
 	}
 
-	private void humanTurn() {
+	private void humanTurn() { // Operation
+		if(isGameOver())
+			return;
 		int turn;
 		while(true) {
 			print(String.format(USER_PROMPT, stones));
@@ -38,30 +43,27 @@ public class TakeGameImpl implements Game {
 			print(ERROR_MESSAGE);
 		}
 		stones -= turn;
-		
+		if(isGameOver()) {
+			System.out.println("Du Loser");
+		}
 	}
 
 	private void computerTurn() {
+		if(isGameOver())
+			return;
 		int turn;
 		final int zuege[] = {3,1,1,2};
 		
-		if(stones < 1) {
-			print("Du Loser");
-			gameover = true;
-			return;
-		}
-		
-		if(stones == 1) {
-			print("Du hast nur Glueck gehabt!");
-			gameover = true;
-			return;
-		}
+
 		
 		turn = zuege[stones % 4];
 		
 		print(String.format("Computer nimmt %s Steine.", turn));
 		
 		stones -= turn;
+		if(isGameOver()) {
+			System.out.println("Du hast nur Glück gehabt");
+		}
 	}
 	
 	private void print(String message) {
