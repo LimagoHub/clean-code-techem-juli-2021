@@ -1,77 +1,87 @@
 package de.techem.games.takegame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import de.techem.games.Game;
+import de.techem.games.takegame.players.TakeGamePlayer;
 
 public class TakeGameImpl implements Game {
-	private static final String ERROR_MESSAGE = "Ungültiger Zug";
-	private static final String USER_PROMPT = "Es gibt %s Steine. Bitte nehmen Sie 1, 2 oder 3.";
-	private Scanner scanner = new Scanner(System.in);
+	private static final String ERROR_MESSAGE = "Ungï¿½ltiger Zug";
+
+	private TakeGamePlayer currentPlayer = null;
 	private int stones;
-	private boolean gameover;
+	private int turn;
+	private List<TakeGamePlayer> players = new ArrayList<>();
 	
 	public TakeGameImpl() {
 		stones = 23;
-		gameover = false;
+		
+	}
+	
+	public void addPlayer(TakeGamePlayer player) {
+		players.add(player);
 	}
 
-	private boolean isGameOver() {
-		return stones <= 0;
+	public void removelayer(TakeGamePlayer player) {
+		players.remove(player);
 	}
+
+	
 	@Override
 	public void play() {
-		while (! isGameOver()) {
-			executeTurns();
-		}
+		while (! isGameOver()) 		executeTurns();
+
 
 	}
 
-	private void executeTurns() { // Integration
-		humanTurn();
-		computerTurn();
+	private void executeTurns() { // operation 
+		for(TakeGamePlayer player : players) prepareTurn(player);
 	}
 
-	private void humanTurn() { // Operation
-		if(isGameOver())
-			return;
-		int turn;
+	private void prepareTurn(TakeGamePlayer player) { // Sorgenkind (falsche Abstraktion)
+		currentPlayer = player;
+		executeSingleTurn();
+	}
+
+	private void executeSingleTurn() { // Operation??
+		if(isGameOver()) return;
+		
 		while(true) {
-			print(String.format(USER_PROMPT, stones));
-			turn = readInt();
+			
+			turn =currentPlayer.doTurn(stones);
+			
 			if(turn >= 1 && turn <= 3) break;
 			print(ERROR_MESSAGE);
 		}
-		stones -= turn;
-		if(isGameOver()) {
-			System.out.println("Du Loser");
-		}
+		
+		terminateTurn();
 	}
 
-	private void computerTurn() {
-		if(isGameOver())
-			return;
-		int turn;
-		final int zuege[] = {3,1,1,2};
-		
 
+	
+	
+	private void terminateTurn() {// Integration
+		updateScene();
+		checkLosing();
+	}
+
+	private void checkLosing() {// Operation
+		if(isGameOver()) print(String.format("%s hat verloren", currentPlayer.getName()));
 		
-		turn = zuege[stones % 4];
-		
-		print(String.format("Computer nimmt %s Steine.", turn));
-		
+	}
+
+	private void updateScene() {
 		stones -= turn;
-		if(isGameOver()) {
-			System.out.println("Du hast nur Glück gehabt");
-		}
+	}
+	
+	private boolean isGameOver() {
+		return stones <= 0 || players.isEmpty();
 	}
 	
 	private void print(String message) {
 		System.out.println(message);
-	}
-	
-	private int readInt() {
-		return scanner.nextInt();
 	}
 
 }
