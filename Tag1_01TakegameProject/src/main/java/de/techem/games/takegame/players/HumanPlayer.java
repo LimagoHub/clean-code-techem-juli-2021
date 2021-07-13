@@ -7,7 +7,7 @@ public class HumanPlayer extends AbstractTakeGamePlayer {
 	private Scanner scanner = new Scanner(System.in);
 
 	@Override
-	public int doTurn(int stones) {
+	public Integer doTurn(Integer stones) {
 		System.out.println(String.format(USER_PROMPT, stones));
 		return scanner.nextInt();
 	}
