@@ -1,9 +1,5 @@
 package de.techem.app;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Random;
-
 public class Application {
 
 	
@@ -16,19 +12,8 @@ public class Application {
 	}
 
 	private void run() {
-		Random random = new Random();
-		
-		Instant start = Instant.now();
-		
-		for(int i = 0; i < feld.length; i ++) {
-			feld[i] = random.nextInt();
-		}
-		
-		Instant ende = Instant.now();
-		Duration duration = Duration.between(start, ende);
-		
-		System.out.println("Duration = " + duration.toMillis());
-		
+		ArrayServiceImpl service = new ArrayServiceImpl();
+		service.fillArrayWithRandomNumbersParallel(feld);
 	}
 
 }
