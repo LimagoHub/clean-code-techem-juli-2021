@@ -18,7 +18,7 @@ public class Main {
 	private void run() {
 		Schwein piggy = new Schwein("Miss Piggy");
 
-		piggy.addPigTooFatListener(metzger);
+		piggy.addPigTooFatListener(new SchweineMetgerAdapter());
 		piggy.addPigTooFatListener(spediteur);
 
 		for (int i = 0; i < 11; i++) {
@@ -28,14 +28,22 @@ public class Main {
 
 	}
 
+	class SchweineMetgerAdapter implements PigTooFatListener {
+
+		@Override
+		public void pigTooFat(Schwein dickesSchwein) {
+			metzger.schlachten();
+		}
+	}
+
 }
 
 
-class Metzger implements PigTooFatListener {
+class Metzger  {
 
 
-	@Override
-	public void pigTooFat(Schwein dickesSchwein) {
+
+	public void schlachten() {
 		System.out.println("Messer wetz");
 	}
 }

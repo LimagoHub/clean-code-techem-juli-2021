@@ -1,20 +1,23 @@
 package de.techem.games;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 import de.techem.games.players.GamePlayer;
 import de.techem.io.Writer;
-import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class AbstractGameTest {
 	
@@ -23,13 +26,10 @@ class AbstractGameTest {
 	
 	
 	private AbstractGameDummyForTest objectUnderTest;
-	
-	 
 	private Writer writerMock;
-	
-	
 	private GamePlayer<DummyScene, DummyTurn> playerMock;
 	
+	@SuppressWarnings("unchecked")
 	@BeforeEach
 	public void init() {
 		isvalid = true;

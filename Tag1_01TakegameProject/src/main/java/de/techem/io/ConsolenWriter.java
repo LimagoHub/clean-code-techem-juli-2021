@@ -4,7 +4,12 @@ public class ConsolenWriter implements Writer {
 
 	@Override
 	public void write(String message) {
-		System.out.println(message);
+		try {
+			Thread.sleep(1000);
+			System.out.println(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
